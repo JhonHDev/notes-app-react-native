@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "notes-app-react-native",
-    "slug": "notes-app-react-native",
+    "name": "Notes App",
+    "slug": "notes-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
