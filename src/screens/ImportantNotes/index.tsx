@@ -30,6 +30,8 @@ const ImportantNotes = () => {
         data={dummyNoteList}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <NoteCard note={item} />}
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
       />
     </NotesLayout>
   );
@@ -37,4 +39,10 @@ const ImportantNotes = () => {
 
 export default ImportantNotes;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    gap: 12,
+    paddingHorizontal: 20,
+    paddingBottom: 150,
+  },
+});

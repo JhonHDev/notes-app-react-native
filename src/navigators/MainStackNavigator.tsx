@@ -11,7 +11,15 @@ const Stack = createStackNavigator<MainStackParams>();
 
 const MainStackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          borderBottomWidth: 1,
+          borderBottomColor: "#cccccc51",
+          shadowColor: "#cccccc51",
+        },
+      }}
+    >
       <Stack.Screen
         name="NoteLists"
         component={NoteLists}

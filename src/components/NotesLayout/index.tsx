@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import Header from "../Header";
 import NoteCategories from "../NoteCategories";
 import CreateNoteBtn from "../CreateNoteBtn";
 
@@ -13,11 +12,13 @@ interface Props {
 
 const NotesLayout = ({ children, showCategories, showCreateBtn }: Props) => {
   return (
-    <View>
-      <Header />
-      {showCategories && <NoteCategories />}
+    <View style={styles.container}>
+      {showCategories && (
+        <View>
+          <NoteCategories />
+        </View>
+      )}
       <View>{children}</View>
-
       {showCreateBtn && <CreateNoteBtn />}
     </View>
   );
@@ -25,4 +26,12 @@ const NotesLayout = ({ children, showCategories, showCreateBtn }: Props) => {
 
 export default NotesLayout;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFF",
+    gap: 20,
+    paddingTop: 20,
+    position: "relative", // Para que el botón absoluto se posicione respecto a este contenedor
+  },
+});

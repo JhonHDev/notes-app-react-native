@@ -9,7 +9,8 @@ const NoteLists = () => {
     {
       id: "1",
       title: "Dummy Note 1",
-      description: "This is a dummy note for testing purposes.",
+      description:
+        "This is a dummy note for testing purposes. This is a dummy note for testing purposes This is a dummy note for testing purposes",
       isImportant: false,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
@@ -30,6 +31,54 @@ const NoteLists = () => {
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
+    {
+      id: "4",
+      title: "Dummy Note 4",
+      description: "This is a dummy note for testing purposes.",
+      isImportant: false,
+      createdAt: "2023-10-01T12:00:00Z",
+      updatedAt: "2023-10-01T12:00:00Z",
+    },
+    {
+      id: "5",
+      title: "Dummy Note 5",
+      description: "This is a dummy note for testing purposes.",
+      isImportant: false,
+      createdAt: "2023-10-01T12:00:00Z",
+      updatedAt: "2023-10-01T12:00:00Z",
+    },
+    {
+      id: "6",
+      title: "Dummy Note 6",
+      description: "This is a dummy note for testing purposes.",
+      isImportant: false,
+      createdAt: "2023-10-01T12:00:00Z",
+      updatedAt: "2023-10-01T12:00:00Z",
+    },
+    {
+      id: "7",
+      title: "Dummy Note 7",
+      description: "This is a dummy note for testing purposes.",
+      isImportant: false,
+      createdAt: "2023-10-01T12:00:00Z",
+      updatedAt: "2023-10-01T12:00:00Z",
+    },
+    {
+      id: "8",
+      title: "Dummy Note 8",
+      description: "This is a dummy note for testing purposes.",
+      isImportant: false,
+      createdAt: "2023-10-01T12:00:00Z",
+      updatedAt: "2023-10-01T12:00:00Z",
+    },
+    {
+      id: "9",
+      title: "Dummy Note 9",
+      description: "This is a dummy note for testing purposes.",
+      isImportant: false,
+      createdAt: "2023-10-01T12:00:00Z",
+      updatedAt: "2023-10-01T12:00:00Z",
+    },
   ];
 
   return (
@@ -38,6 +87,8 @@ const NoteLists = () => {
         data={dummyNoteList}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <NoteCard note={item} />}
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
       />
     </NotesLayout>
   );
@@ -45,4 +96,10 @@ const NoteLists = () => {
 
 export default NoteLists;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    gap: 12,
+    paddingHorizontal: 20,
+    paddingBottom: 150,
+  },
+});
