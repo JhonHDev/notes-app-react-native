@@ -1,36 +1,40 @@
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
+import { useSQLiteContext } from "expo-sqlite";
+import { useQuery } from "@tanstack/react-query";
 
+import { getImportantNotes } from "../../services/notes/getImportantNotes";
+
+import Loader from "../../components/Loader";
+import LoadDataError from "../../components/LoadDataError";
 import NotesLayout from "../../components/NotesLayout";
 import NoteCard from "../../components/NoteCard";
-import { TypeOfNoteCategories } from "../../models/NoteCategories";
 
 const ImportantNotes = () => {
-  const dummyNoteList = [
-    {
-      id: "1",
-      title: "Dummy Note 1",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: true,
-      category: TypeOfNoteCategories.work,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "2",
-      title: "Dummy Note 2",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: true,
-      category: TypeOfNoteCategories.personal,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-  ];
+  const db = useSQLiteContext();
+
+  const {
+    data: importantNotes = [],
+    isFetching,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["get-important-notes"],
+    queryFn: () => getImportantNotes(db),
+  });
+
+  if (isFetching) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <LoadDataError refetch={refetch} />;
+  }
 
   return (
     <NotesLayout>
       <FlatList
-        data={dummyNoteList}
+        data={importantNotes}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <NoteCard note={item} />}
         contentContainerStyle={styles.container}

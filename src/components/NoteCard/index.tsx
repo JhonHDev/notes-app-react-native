@@ -6,18 +6,17 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import { MainStackParams } from "../../models/navigators/MainStackParams";
+import { NoteImportant } from "../../models/NoteImportant";
 import { Note } from "../../models/Note";
-import { formatDate } from "../../utils/formatDate";
 
-import { TypeOfNoteCategories } from "../../models/NoteCategories";
+import { formatDate } from "../../utils/formatDate";
 import { getCategoryName } from "../../utils/getCategoryName";
 
 interface Props {
   note: Note;
-  category?: TypeOfNoteCategories;
 }
 
-const NoteCard = ({ note, category }: Props) => {
+const NoteCard = ({ note }: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParams>>();
 
   const createdDate = formatDate(note.createdAt);
@@ -26,7 +25,7 @@ const NoteCard = ({ note, category }: Props) => {
     navigation.navigate("UpdateNote", { note });
   };
 
-  const categoryName = getCategoryName(category ?? note.category);
+  const categoryName = getCategoryName(note.category);
 
   return (
     <TouchableOpacity onPress={handleGoToUpdateNote}>
@@ -36,7 +35,7 @@ const NoteCard = ({ note, category }: Props) => {
             <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
               {note.title}
             </Text>
-            {note.isImportant && (
+            {note.isImportant === NoteImportant.YES && (
               <FontAwesome5 name="fire" size={15} color="red" />
             )}
             <Text style={styles.category}>{categoryName}</Text>

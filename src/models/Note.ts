@@ -1,12 +1,14 @@
+import { NoteImportant } from "./NoteImportant";
 import { TypeOfNoteCategories } from "./NoteCategories";
+import { NoteActive } from "./NoteActive";
 
 export interface Note {
-  id: string;
+  id?: string;
   title: string;
   description: string;
-  isImportant?: boolean;
+  isImportant: NoteImportant;
   category: TypeOfNoteCategories;
+  isActive: NoteActive;
   createdAt: string;
   updatedAt: string;
-  isDeleted?: boolean;
 }

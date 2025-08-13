@@ -24,7 +24,10 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="NoteLists"
         component={NoteLists}
-        options={{ title: "Lista de Notas" }}
+        options={{
+          title: "Lista de Notas",
+          cardStyle: { backgroundColor: "#FFF" },
+        }}
       />
 
       <Stack.Screen

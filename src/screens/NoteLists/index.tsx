@@ -1,100 +1,40 @@
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
+import { useSQLiteContext } from "expo-sqlite";
+import { useQuery } from "@tanstack/react-query";
 
+import { getAllNotes } from "../../services/notes/getAllNotes";
+
+import Loader from "../../components/Loader";
+import LoadDataError from "../../components/LoadDataError";
 import NotesLayout from "../../components/NotesLayout";
 import NoteCard from "../../components/NoteCard";
-import { TypeOfNoteCategories } from "../../models/NoteCategories";
 
 const NoteLists = () => {
-  const dummyNoteList = [
-    {
-      id: "1",
-      title: "Dummy Note 1",
-      description:
-        "This is a dummy note for testing purposes. This is a dummy note for testing purposes This is a dummy note for testing purposes",
-      isImportant: true,
-      category: TypeOfNoteCategories.work,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "2",
-      title: "Dummy Note 2",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: true,
-      category: TypeOfNoteCategories.study,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "3",
-      title: "Dummy Note 3",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: false,
-      category: TypeOfNoteCategories.personal,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "4",
-      title: "Dummy Note 4",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: false,
-      category: TypeOfNoteCategories.ideas,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "5",
-      title: "Dummy Note 5",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: false,
-      category: TypeOfNoteCategories.finances,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "6",
-      title: "Dummy Note 6",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: false,
-      category: TypeOfNoteCategories.other,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "7",
-      title: "Dummy Note 7",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: false,
-      category: TypeOfNoteCategories.study,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "8",
-      title: "Dummy Note 8",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: false,
-      category: TypeOfNoteCategories.work,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      id: "9",
-      title: "Dummy Note 9",
-      description: "This is a dummy note for testing purposes.",
-      isImportant: false,
-      category: TypeOfNoteCategories.ideas,
-      createdAt: "2023-10-01T12:00:00Z",
-      updatedAt: "2023-10-01T12:00:00Z",
-    },
-  ];
+  const db = useSQLiteContext();
+
+  const {
+    data: notes = [],
+    isFetching,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["get-notes"],
+    queryFn: () => getAllNotes(db),
+  });
+
+  if (isFetching) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <LoadDataError refetch={refetch} />;
+  }
 
   return (
     <NotesLayout showCategories showCreateBtn>
       <FlatList
-        data={dummyNoteList}
+        data={notes}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <NoteCard note={item} />}
         contentContainerStyle={styles.container}

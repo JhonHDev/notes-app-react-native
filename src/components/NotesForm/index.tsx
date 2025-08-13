@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {
   StyleSheet,
   Text,
@@ -7,18 +6,28 @@ import {
   TextInput,
   Switch,
   TouchableOpacity,
+  Alert,
 } from "react-native";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
+import { useSQLiteContext } from "expo-sqlite";
+
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
 import { Note } from "../../models/Note";
+import { TypeOfNoteCategories } from "../../models/NoteCategories";
+import { NoteImportant } from "../../models/NoteImportant";
+import { NoteActive } from "../../models/NoteActive";
 
 import { noteCategories } from "../../utils/noteCategories";
-import { TypeOfNoteCategories } from "../../models/NoteCategories";
 import { getCategoryIcon } from "../../utils/getCategoryIcon";
-
+import { createNote } from "../../services/notes/createNote";
 interface FormValues {
   title: string;
   description: string;
-  isImportant: boolean;
+  isImportant: NoteImportant;
   category: TypeOfNoteCategories;
 }
 
@@ -28,16 +37,18 @@ interface Props {
 }
 
 const NotesForm = ({ note, onSubmit }: Props) => {
+  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
     setValue,
     formState: { errors },
+    reset,
   } = useForm<FormValues>({
     defaultValues: {
       title: note?.title || "",
       description: note?.description || "",
-      isImportant: note?.isImportant || false,
+      isImportant: note?.isImportant ?? NoteImportant.NO,
       category: note?.category ?? TypeOfNoteCategories.other,
     },
   });
@@ -47,14 +58,55 @@ const NotesForm = ({ note, onSubmit }: Props) => {
     if (note) {
       setValue("title", note.title || "");
       setValue("description", note.description || "");
-      setValue("isImportant", note.isImportant || false);
+      setValue("isImportant", note.isImportant ?? NoteImportant.NO);
       setValue("category", note.category ?? TypeOfNoteCategories.other);
     }
   }, [note, setValue]);
 
+  const db = useSQLiteContext();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (data: FormValues) => {
+      const noteToSave: Note = {
+        ...data,
+        isActive: NoteActive.YES,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      console.log(JSON.stringify(noteToSave, null, 2));
+      return await createNote({
+        db,
+        note: noteToSave,
+      });
+    },
+    onSuccess: () => {
+      Alert.alert(
+        "Nota creada",
+        "La nota se creó con éxito.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.goBack();
+              queryClient.invalidateQueries({ queryKey: ["get-notes"] });
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+
+      reset();
+    },
+  });
+
   const onFormSubmit = (data: FormValues) => {
-    if (onSubmit) onSubmit(data);
-    // Aquí puedes manejar el submit
+    if (note) {
+      return;
+    }
+
+    mutation.mutate(data);
   };
 
   return (
@@ -153,10 +205,16 @@ const NotesForm = ({ note, onSubmit }: Props) => {
           render={({ field: { onChange, value } }) => (
             <>
               <Switch
-                value={value}
-                onValueChange={onChange}
+                value={value === NoteImportant.YES}
+                onValueChange={() =>
+                  onChange(
+                    value === NoteImportant.YES
+                      ? NoteImportant.NO
+                      : NoteImportant.YES
+                  )
+                }
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={value ? "#054eac" : "#f4f3f4"}
+                thumbColor={value === NoteImportant.YES ? "#054eac" : "#f4f3f4"}
                 style={{ marginRight: 8 }}
               />
               <Text style={styles.switchLabel}>Importante</Text>
@@ -167,17 +225,33 @@ const NotesForm = ({ note, onSubmit }: Props) => {
 
       {/* Botón de crear */}
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, mutation.isPending && { opacity: 0.7 }]}
         onPress={handleSubmit(onFormSubmit)}
+        disabled={mutation.isPending}
       >
         <View style={styles.buttonContent}>
-          <MaterialIcons
-            name={note ? "edit" : "add"}
-            size={20}
-            color="#fff"
-            style={{ marginRight: 8 }}
-          />
-          <Text style={styles.buttonText}>{note ? "Actualizar" : "Crear"}</Text>
+          {mutation.isPending ? (
+            <MaterialIcons
+              name="hourglass-empty"
+              size={20}
+              color="#fff"
+              style={{ marginRight: 8 }}
+            />
+          ) : (
+            <MaterialIcons
+              name={note ? "edit" : "add"}
+              size={20}
+              color="#fff"
+              style={{ marginRight: 8 }}
+            />
+          )}
+          <Text style={styles.buttonText}>
+            {mutation.isPending
+              ? "Procesando..."
+              : note
+              ? "Actualizar"
+              : "Crear"}
+          </Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -191,6 +265,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+  },
+  successText: {
+    color: "#4BB543",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  errorText: {
+    color: "#ff4d4f",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 8,
   },
   container: {
     gap: 16,
