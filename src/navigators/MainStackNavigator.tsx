@@ -6,6 +6,7 @@ import NoteLists from "../screens/NoteLists";
 import CreateNote from "../screens/CreateNote";
 import UpdateNote from "../screens/UpdateNote";
 import DeletedNotes from "../screens/DeletedNotes";
+import SingleDetailsNote from "../screens/SingleDetailsNote";
 
 const Stack = createStackNavigator<MainStackParams>();
 
@@ -26,6 +27,14 @@ const MainStackNavigator = () => {
         component={NoteLists}
         options={{
           title: "Lista de Notas",
+          cardStyle: { backgroundColor: "#FFF" },
+        }}
+      />
+      <Stack.Screen
+        name="SingleDetailsNote"
+        component={SingleDetailsNote}
+        options={{
+          title: "Detalle de Nota",
           cardStyle: { backgroundColor: "#FFF" },
         }}
       />

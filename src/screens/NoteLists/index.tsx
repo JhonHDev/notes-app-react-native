@@ -35,7 +35,7 @@ const NoteLists = () => {
     <NotesLayout showCategories showCreateBtn>
       <FlatList
         data={notes}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <NoteCard note={item} />}
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}

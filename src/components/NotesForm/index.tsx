@@ -68,7 +68,7 @@ const NotesForm = ({ note, onSubmit }: Props) => {
 
   const mutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      const noteToSave: Note = {
+      const noteToSave = {
         ...data,
         isActive: NoteActive.YES,
         createdAt: new Date().toISOString(),

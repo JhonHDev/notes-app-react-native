@@ -3,7 +3,7 @@ import { TypeOfNoteCategories } from "./NoteCategories";
 import { NoteActive } from "./NoteActive";
 
 export interface Note {
-  id?: string;
+  id: number;
   title: string;
   description: string;
   isImportant: NoteImportant;

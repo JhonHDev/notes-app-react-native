@@ -35,7 +35,7 @@ const ImportantNotes = () => {
     <NotesLayout>
       <FlatList
         data={importantNotes}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <NoteCard note={item} />}
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}

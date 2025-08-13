@@ -22,7 +22,7 @@ const NoteCard = ({ note }: Props) => {
   const createdDate = formatDate(note.createdAt);
 
   const handleGoToUpdateNote = () => {
-    navigation.navigate("UpdateNote", { note });
+    navigation.navigate("SingleDetailsNote", { note });
   };
 
   const categoryName = getCategoryName(note.category);
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     width: "80%",
+    gap: 10,
   },
   titleRow: {
     flexDirection: "row",
