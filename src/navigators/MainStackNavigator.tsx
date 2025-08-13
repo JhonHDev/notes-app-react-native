@@ -7,6 +7,7 @@ import CreateNote from "../screens/CreateNote";
 import UpdateNote from "../screens/UpdateNote";
 import DeletedNotes from "../screens/DeletedNotes";
 import SingleDetailsNote from "../screens/SingleDetailsNote";
+import NotesByCategory from "../screens/NotesByCategory";
 
 const Stack = createStackNavigator<MainStackParams>();
 
@@ -30,6 +31,16 @@ const MainStackNavigator = () => {
           cardStyle: { backgroundColor: "#FFF" },
         }}
       />
+
+      <Stack.Screen
+        name="NotesByCategory"
+        component={NotesByCategory}
+        options={{
+          title: "Notas por Categoría",
+          cardStyle: { backgroundColor: "#FFF" },
+        }}
+      />
+
       <Stack.Screen
         name="SingleDetailsNote"
         component={SingleDetailsNote}

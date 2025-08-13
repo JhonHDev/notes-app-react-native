@@ -1,14 +1,45 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View, Text, Button, StyleSheet, Dimensions } from "react-native";
+import Foundation from "@expo/vector-icons/Foundation";
 
 const EmptyNotesAlert = () => {
   return (
-    <View>
-      <Text>No has creado notas todavia</Text>
+    <View
+      style={{
+        flex: 1,
+        height: Dimensions.get("window").height,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <View style={styles.container}>
+        <Foundation name="info" size={50} color="#1976d2" />
+        <Text style={styles.text}>No hay notas disponibles.</Text>
+      </View>
     </View>
   );
 };
 
-export default EmptyNotesAlert;
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+    minHeight: 120,
+    paddingVertical: 10,
+    backgroundColor: "#e3f2fd",
+    borderRadius: 8,
+    margin: 16,
+    elevation: 2,
+    gap: 10,
+  },
+  text: {
+    color: "#1976d2",
+    fontSize: 16,
+    marginBottom: 12,
+    fontWeight: "500",
+    textAlign: "center",
+  },
+});
 
-const styles = StyleSheet.create({});
+export default EmptyNotesAlert;

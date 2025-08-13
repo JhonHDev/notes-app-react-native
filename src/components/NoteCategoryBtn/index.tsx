@@ -3,14 +3,19 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { NoteCategory } from "../../models/NoteCategory";
 import { getCategoryIcon } from "../../utils/getCategoryIcon";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { MainStackParams } from "../../models/navigators/MainStackParams";
 
 interface Props {
   category: NoteCategory;
 }
 
 const NoteCategoryBtn = ({ category }: Props) => {
+  const navigation = useNavigation<NavigationProp<MainStackParams>>();
+
   const handleFilterNotesByCategory = () => {
-    console.log({ category });
+    console.log(category);
+    navigation.navigate("NotesByCategory", { category: category.type });
   };
 
   return (

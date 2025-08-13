@@ -1,4 +1,5 @@
 import { Note } from "../Note";
+import { TypeOfNoteCategories } from "../NoteCategories";
 
 export type MainStackParams = {
   NoteLists: undefined;
@@ -6,4 +7,5 @@ export type MainStackParams = {
   UpdateNote: { note: Note };
   SingleDetailsNote: { note: Note };
   DeletedNotes: undefined;
+  NotesByCategory: { category: TypeOfNoteCategories };
 };
