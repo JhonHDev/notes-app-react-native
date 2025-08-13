@@ -9,11 +9,15 @@ import { MainStackParams } from "../../models/navigators/MainStackParams";
 import { Note } from "../../models/Note";
 import { formatDate } from "../../utils/formatDate";
 
+import { TypeOfNoteCategories } from "../../models/NoteCategories";
+import { getCategoryName } from "../../utils/getCategoryName";
+
 interface Props {
   note: Note;
+  category?: TypeOfNoteCategories;
 }
 
-const NoteCard = ({ note }: Props) => {
+const NoteCard = ({ note, category }: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParams>>();
 
   const createdDate = formatDate(note.createdAt);
@@ -21,6 +25,8 @@ const NoteCard = ({ note }: Props) => {
   const handleGoToUpdateNote = () => {
     navigation.navigate("UpdateNote", { note });
   };
+
+  const categoryName = getCategoryName(category ?? note.category);
 
   return (
     <TouchableOpacity onPress={handleGoToUpdateNote}>
@@ -33,10 +39,12 @@ const NoteCard = ({ note }: Props) => {
             {note.isImportant && (
               <FontAwesome5 name="fire" size={15} color="red" />
             )}
+            <Text style={styles.category}>{categoryName}</Text>
           </View>
           <Text numberOfLines={1} ellipsizeMode="tail">
             {note.description}
           </Text>
+
           <Text style={styles.dateText}>Creada el {createdDate}</Text>
         </View>
         <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
@@ -64,10 +72,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    gap: 10,
+    gap: 8,
   },
   title: {
     fontSize: 18,
+    fontWeight: "bold",
+  },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginTop: 6,
+    marginBottom: 6,
+  },
+  category: {
+    backgroundColor: "#E3F2FD",
+    color: "#1976D2",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
     fontWeight: "bold",
   },
   dateText: {

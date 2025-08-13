@@ -10,18 +10,11 @@ import NotesForm from "../../components/NotesForm";
 interface Props extends StackScreenProps<MainStackParams, "UpdateNote"> {}
 
 const UpdateNote = ({ route }: Props) => {
-  const dummyNote = {
-    id: "1",
-    title: "Dummy Note",
-    description: "This is a dummy note for testing purposes.",
-    isImportant: false,
-    createdAt: "2023-10-01T12:00:00Z",
-    updatedAt: "2023-10-01T12:00:00Z",
-  };
+  const note = route.params?.note;
 
   return (
     <NotesLayout>
-      <NotesForm note={dummyNote} />
+      <NotesForm note={note} />
     </NotesLayout>
   );
 };

@@ -4,4 +4,5 @@ export enum TypeOfNoteCategories {
   personal,
   finances,
   ideas,
+  other,
 }

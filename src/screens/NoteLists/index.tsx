@@ -3,6 +3,7 @@ import { FlatList, StyleSheet } from "react-native";
 
 import NotesLayout from "../../components/NotesLayout";
 import NoteCard from "../../components/NoteCard";
+import { TypeOfNoteCategories } from "../../models/NoteCategories";
 
 const NoteLists = () => {
   const dummyNoteList = [
@@ -11,7 +12,8 @@ const NoteLists = () => {
       title: "Dummy Note 1",
       description:
         "This is a dummy note for testing purposes. This is a dummy note for testing purposes This is a dummy note for testing purposes",
-      isImportant: false,
+      isImportant: true,
+      category: TypeOfNoteCategories.work,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
@@ -20,6 +22,7 @@ const NoteLists = () => {
       title: "Dummy Note 2",
       description: "This is a dummy note for testing purposes.",
       isImportant: true,
+      category: TypeOfNoteCategories.study,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
@@ -28,6 +31,7 @@ const NoteLists = () => {
       title: "Dummy Note 3",
       description: "This is a dummy note for testing purposes.",
       isImportant: false,
+      category: TypeOfNoteCategories.personal,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
@@ -36,6 +40,7 @@ const NoteLists = () => {
       title: "Dummy Note 4",
       description: "This is a dummy note for testing purposes.",
       isImportant: false,
+      category: TypeOfNoteCategories.ideas,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
@@ -44,6 +49,7 @@ const NoteLists = () => {
       title: "Dummy Note 5",
       description: "This is a dummy note for testing purposes.",
       isImportant: false,
+      category: TypeOfNoteCategories.finances,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
@@ -52,6 +58,7 @@ const NoteLists = () => {
       title: "Dummy Note 6",
       description: "This is a dummy note for testing purposes.",
       isImportant: false,
+      category: TypeOfNoteCategories.other,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
@@ -60,6 +67,7 @@ const NoteLists = () => {
       title: "Dummy Note 7",
       description: "This is a dummy note for testing purposes.",
       isImportant: false,
+      category: TypeOfNoteCategories.study,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
@@ -68,6 +76,7 @@ const NoteLists = () => {
       title: "Dummy Note 8",
       description: "This is a dummy note for testing purposes.",
       isImportant: false,
+      category: TypeOfNoteCategories.work,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },
@@ -76,6 +85,7 @@ const NoteLists = () => {
       title: "Dummy Note 9",
       description: "This is a dummy note for testing purposes.",
       isImportant: false,
+      category: TypeOfNoteCategories.ideas,
       createdAt: "2023-10-01T12:00:00Z",
       updatedAt: "2023-10-01T12:00:00Z",
     },

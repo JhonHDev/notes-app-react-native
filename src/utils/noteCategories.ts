@@ -27,4 +27,9 @@ export const noteCategories: NoteCategory[] = [
     name: "Ideas",
     type: TypeOfNoteCategories.ideas,
   },
+  {
+    id: "6",
+    name: "Otros",
+    type: TypeOfNoteCategories.other,
+  },
 ];

@@ -18,6 +18,7 @@ const MainStackNavigator = () => {
           borderBottomColor: "#cccccc51",
           shadowColor: "#cccccc51",
         },
+        headerBackTitleVisible: false,
       }}
     >
       <Stack.Screen
