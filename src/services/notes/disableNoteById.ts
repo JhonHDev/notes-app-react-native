@@ -9,7 +9,7 @@ interface Params {
 export const disableNoteById = async ({ db, noteId }: Params) => {
   try {
     return await db.runAsync(`UPDATE notes SET isActive = ? WHERE id = ?`, [
-      NoteActive.NO,
+      NoteActive.FALSE,
       noteId,
     ]);
   } catch (error) {

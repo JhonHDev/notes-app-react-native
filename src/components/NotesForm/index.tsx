@@ -48,7 +48,7 @@ const NotesForm = ({ note, onSubmit }: Props) => {
     defaultValues: {
       title: note?.title || "",
       description: note?.description || "",
-      isImportant: note?.isImportant ?? NoteImportant.NO,
+      isImportant: note?.isImportant ?? NoteImportant.FALSE,
       category: note?.category ?? TypeOfNoteCategories.other,
     },
   });
@@ -58,7 +58,7 @@ const NotesForm = ({ note, onSubmit }: Props) => {
     if (note) {
       setValue("title", note.title || "");
       setValue("description", note.description || "");
-      setValue("isImportant", note.isImportant ?? NoteImportant.NO);
+      setValue("isImportant", note.isImportant ?? NoteImportant.FALSE);
       setValue("category", note.category ?? TypeOfNoteCategories.other);
     }
   }, [note, setValue]);
@@ -70,7 +70,7 @@ const NotesForm = ({ note, onSubmit }: Props) => {
     mutationFn: async (data: FormValues) => {
       const noteToSave = {
         ...data,
-        isActive: NoteActive.YES,
+        isActive: NoteActive.TRUE,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -205,16 +205,18 @@ const NotesForm = ({ note, onSubmit }: Props) => {
           render={({ field: { onChange, value } }) => (
             <>
               <Switch
-                value={value === NoteImportant.YES}
+                value={value === NoteImportant.TRUE}
                 onValueChange={() =>
                   onChange(
-                    value === NoteImportant.YES
-                      ? NoteImportant.NO
-                      : NoteImportant.YES
+                    value === NoteImportant.TRUE
+                      ? NoteImportant.FALSE
+                      : NoteImportant.TRUE
                   )
                 }
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={value === NoteImportant.YES ? "#054eac" : "#f4f3f4"}
+                thumbColor={
+                  value === NoteImportant.TRUE ? "#054eac" : "#f4f3f4"
+                }
                 style={{ marginRight: 8 }}
               />
               <Text style={styles.switchLabel}>Importante</Text>

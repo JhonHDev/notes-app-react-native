@@ -1,8 +1,8 @@
 export enum TypeOfNoteCategories {
-  work,
-  study,
-  personal,
-  finances,
-  ideas,
-  other,
+  work = "work",
+  study = "study",
+  personal = "personal",
+  finances = "finances",
+  ideas = "ideas",
+  other = "other",
 }

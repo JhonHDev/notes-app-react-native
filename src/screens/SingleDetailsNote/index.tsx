@@ -39,7 +39,7 @@ const SingleDetailsNote = ({ route, navigation }: Props) => {
           <Text style={styles.description}>{note.description}</Text>
 
           <View style={styles.infoRow}>
-            {note.isImportant === NoteImportant.YES && (
+            {note.isImportant === NoteImportant.TRUE && (
               <View style={styles.importantRow}>
                 <FontAwesome5 name="fire" size={15} color="#d32f2f" />
                 <Text style={styles.important}>¡Nota importante!</Text>

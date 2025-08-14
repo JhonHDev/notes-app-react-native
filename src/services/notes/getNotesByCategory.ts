@@ -13,7 +13,7 @@ export const getNotesByCategory = async ({ db, category }: Params) => {
   try {
     const response = await db.getAllAsync(
       `SELECT * FROM notes WHERE category = ? AND isActive = ?`,
-      [category, NoteActive.YES]
+      [category, NoteActive.TRUE]
     );
 
     console.log(" /// NOTAS PRO CATEGORIA ///");

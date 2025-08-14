@@ -5,6 +5,8 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { NotificationsStackParams } from "../../models/navigators/NotificationsStackParams";
 import { TypeOfNoteCategories } from "../../models/NoteCategories";
+import { NoteImportant } from "../../models/NoteImportant";
+import { NoteActive } from "../../models/NoteActive";
 import { getCategoryName } from "../../utils/getCategoryName";
 import { getCategoryIcon } from "../../utils/getCategoryIcon";
 
@@ -18,8 +20,9 @@ const SingleNote = (props: Props) => {
     title: "Título de la nota",
     description:
       "Descripción detallada de la nota. Es esta toda la descripción que hay disponible.",
-    isImportant: true,
+    isImportant: NoteImportant.TRUE,
     category: TypeOfNoteCategories.work,
+    isActive: NoteActive.TRUE,
   };
 
   const categoryName = getCategoryName(note.category);

@@ -35,7 +35,7 @@ const NoteCard = ({ note }: Props) => {
             <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
               {note.title}
             </Text>
-            {note.isImportant === NoteImportant.YES && (
+            {note.isImportant === NoteImportant.TRUE && (
               <FontAwesome5 name="fire" size={15} color="red" />
             )}
             <Text style={styles.category}>{categoryName}</Text>

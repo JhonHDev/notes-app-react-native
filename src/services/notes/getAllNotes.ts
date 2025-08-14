@@ -5,7 +5,8 @@ import { NoteActive } from "../../models/NoteActive";
 export const getAllNotes = async (db: SQLiteDatabase) => {
   try {
     const response = await db.getAllAsync(
-      `SELECT * FROM notes WHERE isActive = ${NoteActive.YES}`
+      `SELECT * FROM notes WHERE isActive = ?`,
+      [NoteActive.TRUE]
     );
     return response as Note[];
   } catch (error) {

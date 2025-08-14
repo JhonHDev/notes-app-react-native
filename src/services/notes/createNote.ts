@@ -13,9 +13,9 @@ export const createNote = async ({ db, note }: Params) => {
   const {
     title,
     description,
-    isImportant = NoteImportant.NO,
+    isImportant = NoteImportant.FALSE,
     category,
-    isActive = NoteActive.YES,
+    isActive = NoteActive.TRUE,
     createdAt,
     updatedAt,
   } = note;
