@@ -14,15 +14,14 @@ import { getCategoryName } from "../../utils/getCategoryName";
 
 interface Props {
   note: Note;
+  goToSingleNote: (note: Note) => void;
 }
 
-const NoteCard = ({ note }: Props) => {
-  const navigation = useNavigation<NavigationProp<MainStackParams>>();
-
+const NoteCard = ({ note, goToSingleNote }: Props) => {
   const createdDate = formatDate(note.createdAt);
 
   const handleGoToUpdateNote = () => {
-    navigation.navigate("SingleDetailsNote", { note });
+    goToSingleNote(note);
   };
 
   const categoryName = getCategoryName(note.category);
@@ -75,6 +74,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   title: {
+    maxWidth: "70%",
     fontSize: 18,
     fontWeight: "bold",
   },

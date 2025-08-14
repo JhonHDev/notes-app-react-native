@@ -31,7 +31,6 @@ const NotesByCategory = ({ route, navigation }: Props) => {
   } = useQuery({
     queryKey: ["get-notes-by-category", category],
     queryFn: () => getNotesByCategory({ db, category }),
-    staleTime: 0,
   });
 
   useEffect(() => {
@@ -60,7 +59,14 @@ const NotesByCategory = ({ route, navigation }: Props) => {
       <FlatList
         data={notes}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <NoteCard note={item} />}
+        renderItem={({ item }) => (
+          <NoteCard
+            note={item}
+            goToSingleNote={() => {
+              navigation.navigate("SingleDetailsNote", { noteId: item.id });
+            }}
+          />
+        )}
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
         refreshControl={

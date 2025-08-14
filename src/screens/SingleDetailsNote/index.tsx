@@ -1,7 +1,8 @@
 import React from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-
+import { useQuery } from "@tanstack/react-query";
+import { useSQLiteContext } from "expo-sqlite";
 import { MainStackParams } from "../../models/navigators/MainStackParams";
 
 import { useModal } from "../../hooks/useModal";
@@ -13,33 +14,65 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { getCategoryName } from "../../utils/getCategoryName";
 import { getCategoryIcon } from "../../utils/getCategoryIcon";
 
-import DeleteNoteModal from "../../components/DeleteNoteModal";
+import { Note } from "../../models/Note";
 import { NoteImportant } from "../../models/NoteImportant";
+import { getNoteById } from "../../services/notes/getNoteById";
+
+import DeleteNoteModal from "../../components/DeleteNoteModal";
+import Loader from "../../components/Loader";
+import LoadDataError from "../../components/LoadDataError";
+import EmptyNotesAlert from "../../components/EmptyNotesAlert";
 
 interface Props
   extends StackScreenProps<MainStackParams, "SingleDetailsNote"> {}
 
 const SingleDetailsNote = ({ route, navigation }: Props) => {
-  const note = route.params.note;
-
   const deleteModal = useModal();
+
+  const noteId = route.params.noteId;
+
+  const db = useSQLiteContext();
+
+  const {
+    data: note,
+    isFetching,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery<Note>({
+    queryKey: ["get-single-note", noteId],
+    queryFn: () => getNoteById({ db, noteId }),
+    initialData: {} as Note,
+  });
 
   const categoryName = getCategoryName(note.category);
   const categoryIcon = getCategoryIcon(note.category, "#1976D2");
 
   const handleGoToEditNote = () => {
-    navigation.navigate("UpdateNote", { note });
+    note && navigation.navigate("UpdateNote", { note });
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <LoadDataError refetch={refetch} />;
+  }
+
+  if (!isFetching && !note) {
+    return <EmptyNotesAlert />;
+  }
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.card}>
-          <Text style={styles.title}>{note.title}</Text>
-          <Text style={styles.description}>{note.description}</Text>
+          <Text style={styles.title}>{note?.title}</Text>
+          <Text style={styles.description}>{note?.description}</Text>
 
           <View style={styles.infoRow}>
-            {note.isImportant === NoteImportant.TRUE && (
+            {note?.isImportant === NoteImportant.TRUE && (
               <View style={styles.importantRow}>
                 <FontAwesome5 name="fire" size={15} color="#d32f2f" />
                 <Text style={styles.important}>¡Nota importante!</Text>
@@ -77,7 +110,7 @@ const SingleDetailsNote = ({ route, navigation }: Props) => {
       </View>
 
       {deleteModal.isOpen && (
-        <DeleteNoteModal noteId={note.id} closeModal={deleteModal.closeModal} />
+        <DeleteNoteModal noteId={noteId} closeModal={deleteModal.closeModal} />
       )}
     </>
   );

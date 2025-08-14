@@ -8,6 +8,7 @@ import UpdateNote from "../screens/UpdateNote";
 import DeletedNotes from "../screens/DeletedNotes";
 import SingleDetailsNote from "../screens/SingleDetailsNote";
 import NotesByCategory from "../screens/NotesByCategory";
+import ImportantNotesStackNavigator from "./ImportantNotesStackNavigator";
 
 const Stack = createStackNavigator<MainStackParams>();
 
@@ -66,6 +67,12 @@ const MainStackNavigator = () => {
         name="DeletedNotes"
         component={DeletedNotes}
         options={{ title: "Notas Eliminadas" }}
+      />
+
+      <Stack.Screen
+        name="ImportantNotesStackNavigator"
+        component={ImportantNotesStackNavigator}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

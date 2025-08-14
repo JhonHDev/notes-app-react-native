@@ -8,6 +8,8 @@ export const getAllNotes = async (db: SQLiteDatabase) => {
       `SELECT * FROM notes WHERE isActive = ?`,
       [NoteActive.TRUE]
     );
+
+    console.log(JSON.stringify(response, null, 2));
     return response as Note[];
   } catch (error) {
     console.log(error);

@@ -24,6 +24,7 @@ import { NoteActive } from "../../models/NoteActive";
 import { noteCategories } from "../../utils/noteCategories";
 import { getCategoryIcon } from "../../utils/getCategoryIcon";
 import { createNote } from "../../services/notes/createNote";
+import { updateNote } from "../../services/notes/updateNote";
 interface FormValues {
   title: string;
   description: string;
@@ -33,11 +34,11 @@ interface FormValues {
 
 interface Props {
   note?: Note;
-  onSubmit?: (data: FormValues) => void;
 }
 
-const NotesForm = ({ note, onSubmit }: Props) => {
+const NotesForm = ({ note }: Props) => {
   const navigation = useNavigation();
+
   const {
     control,
     handleSubmit,
@@ -66,7 +67,7 @@ const NotesForm = ({ note, onSubmit }: Props) => {
   const db = useSQLiteContext();
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const createNoteMutation = useMutation({
     mutationFn: async (data: FormValues) => {
       const noteToSave = {
         ...data,
@@ -75,23 +76,69 @@ const NotesForm = ({ note, onSubmit }: Props) => {
         updatedAt: new Date().toISOString(),
       };
 
-      console.log(JSON.stringify(noteToSave, null, 2));
       return await createNote({
         db,
         note: noteToSave,
       });
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-notes"] });
+      queryClient.invalidateQueries({
+        queryKey: ["get-important-notes"],
+      });
+
+      navigation.goBack();
+
       Alert.alert(
         "Nota creada",
         "La nota se creó con éxito.",
         [
           {
             text: "OK",
-            onPress: () => {
-              navigation.goBack();
-              queryClient.invalidateQueries({ queryKey: ["get-notes"] });
-            },
+            onPress: () => {},
+          },
+        ],
+        { cancelable: false }
+      );
+
+      reset();
+    },
+  });
+
+  const updateNoteMutation = useMutation({
+    mutationFn: async (data: FormValues) => {
+      const noteToUpdate = {
+        ...data,
+        isActive: NoteActive.TRUE,
+        updatedAt: new Date().toISOString(),
+      };
+
+      console.log(JSON.stringify(noteToUpdate, null, 2));
+
+      if (note?.id) {
+        return await updateNote({
+          db,
+          noteId: note?.id,
+          note: noteToUpdate,
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-notes"] });
+      queryClient.invalidateQueries({ queryKey: ["get-single-note"] });
+      queryClient.invalidateQueries({
+        queryKey: ["get-important-notes"],
+      });
+
+      navigation.goBack();
+
+      Alert.alert(
+        "Nota actualizada",
+        "La nota se actualizó con éxito.",
+        [
+          {
+            text: "OK",
+            onPress: () => {},
           },
         ],
         { cancelable: false }
@@ -103,10 +150,11 @@ const NotesForm = ({ note, onSubmit }: Props) => {
 
   const onFormSubmit = (data: FormValues) => {
     if (note) {
+      updateNoteMutation.mutate(data);
       return;
     }
 
-    mutation.mutate(data);
+    createNoteMutation.mutate(data);
   };
 
   return (
@@ -227,12 +275,16 @@ const NotesForm = ({ note, onSubmit }: Props) => {
 
       {/* Botón de crear */}
       <TouchableOpacity
-        style={[styles.button, mutation.isPending && { opacity: 0.7 }]}
+        style={[
+          styles.button,
+          createNoteMutation.isPending && { opacity: 0.7 },
+          updateNoteMutation.isPending && { opacity: 0.7 },
+        ]}
         onPress={handleSubmit(onFormSubmit)}
-        disabled={mutation.isPending}
+        disabled={createNoteMutation.isPending || updateNoteMutation.isPending}
       >
         <View style={styles.buttonContent}>
-          {mutation.isPending ? (
+          {createNoteMutation.isPending || updateNoteMutation.isPending ? (
             <MaterialIcons
               name="hourglass-empty"
               size={20}
@@ -248,7 +300,7 @@ const NotesForm = ({ note, onSubmit }: Props) => {
             />
           )}
           <Text style={styles.buttonText}>
-            {mutation.isPending
+            {createNoteMutation.isPending || updateNoteMutation.isPending
               ? "Procesando..."
               : note
               ? "Actualizar"

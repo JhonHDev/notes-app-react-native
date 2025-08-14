@@ -10,8 +10,13 @@ import LoadDataError from "../../components/LoadDataError";
 import NotesLayout from "../../components/NotesLayout";
 import NoteCard from "../../components/NoteCard";
 import EmptyNotesAlert from "../../components/EmptyNotesAlert";
+import { StackScreenProps } from "@react-navigation/stack";
+import { ImportantNotesStackParams } from "../../models/navigators/ImportantNotesStackParams";
 
-const ImportantNotes = () => {
+interface Props
+  extends StackScreenProps<ImportantNotesStackParams, "ImportantNotes"> {}
+
+const ImportantNotes = ({ navigation }: Props) => {
   const db = useSQLiteContext();
 
   const {
@@ -42,7 +47,17 @@ const ImportantNotes = () => {
       <FlatList
         data={importantNotes}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <NoteCard note={item} />}
+        renderItem={({ item }) => (
+          <NoteCard
+            note={item}
+            goToSingleNote={() => {
+              navigation.navigate("MainStackNavigator", {
+                screen: "SingleDetailsNote",
+                params: { noteId: item.id },
+              });
+            }}
+          />
+        )}
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
         refreshControl={
