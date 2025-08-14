@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, RefreshControl, StyleSheet } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import { useQuery } from "@tanstack/react-query";
 
@@ -9,6 +9,7 @@ import Loader from "../../components/Loader";
 import LoadDataError from "../../components/LoadDataError";
 import NotesLayout from "../../components/NotesLayout";
 import NoteCard from "../../components/NoteCard";
+import EmptyNotesAlert from "../../components/EmptyNotesAlert";
 
 const ImportantNotes = () => {
   const db = useSQLiteContext();
@@ -16,6 +17,7 @@ const ImportantNotes = () => {
   const {
     data: importantNotes = [],
     isFetching,
+    isLoading,
     isError,
     refetch,
   } = useQuery({
@@ -23,12 +25,16 @@ const ImportantNotes = () => {
     queryFn: () => getImportantNotes(db),
   });
 
-  if (isFetching) {
+  if (isLoading) {
     return <Loader />;
   }
 
   if (isError) {
     return <LoadDataError refetch={refetch} />;
+  }
+
+  if (!isFetching && importantNotes.length === 0) {
+    return <EmptyNotesAlert />;
   }
 
   return (
@@ -39,6 +45,9 @@ const ImportantNotes = () => {
         renderItem={({ item }) => <NoteCard note={item} />}
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
+        }
       />
     </NotesLayout>
   );

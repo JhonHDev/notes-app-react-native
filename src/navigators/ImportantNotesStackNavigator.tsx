@@ -13,13 +13,19 @@ const ImportantNotesStackNavigator = () => {
       <Stack.Screen
         name="ImportantNotes"
         component={ImportantNotes}
-        options={{ title: "Notas Importantes" }}
+        options={{
+          title: "Notas Importantes",
+          cardStyle: { backgroundColor: "#FFF" },
+        }}
       />
 
       <Stack.Screen
         name="UpdateImportantNote"
         component={UpdateImportantNote}
-        options={{ title: "Actualizar Nota" }}
+        options={{
+          title: "Actualizar Nota",
+          cardStyle: { backgroundColor: "#FFF" },
+        }}
       />
     </Stack.Navigator>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import { useQuery } from "@tanstack/react-query";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -25,6 +25,7 @@ const NotesByCategory = ({ route, navigation }: Props) => {
   const {
     data: notes = [],
     isFetching,
+    isLoading,
     isError,
     refetch,
   } = useQuery({
@@ -42,7 +43,7 @@ const NotesByCategory = ({ route, navigation }: Props) => {
     });
   }, [category, isFetching, navigation]);
 
-  if (isFetching) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -62,6 +63,9 @@ const NotesByCategory = ({ route, navigation }: Props) => {
         renderItem={({ item }) => <NoteCard note={item} />}
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
+        }
       />
     </NotesLayout>
   );

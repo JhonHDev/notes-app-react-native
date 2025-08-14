@@ -94,11 +94,6 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
     padding: 18,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
     marginTop: 12,
   },
   title: {

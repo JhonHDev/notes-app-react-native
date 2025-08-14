@@ -8,7 +8,13 @@ interface Props {
 
 const LoadDataError = ({ refetch }: Props) => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <View style={styles.container}>
         <Foundation name="alert" size={50} color="#d32f2f" />
         <Text style={styles.text}>Hubo un error al cargar los datos.</Text>
